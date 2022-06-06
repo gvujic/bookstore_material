@@ -1,0 +1,21 @@
+<mat-toolbar color="primary" class="mat-elevation-z15 toolbar_style">
+
+    <button mat-button class="sidenav-toggle" (click)="sidenavToggle.emit()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <button mat-button (click)="homePage()" matTooltip="Go to home page">
+        <mat-icon>home</mat-icon>
+    </button>
+
+    <span class="menu-btn-position "></span>
+    <button mat-button [matMenuTriggerFor]="appMenu">
+        <mat-icon >more_vert</mat-icon>
+    </button>
+    <mat-menu #appMenu>
+        <button mat-menu-item (click)="changeView()" *ngIf="isAdmin">Change view</button>
+        <button mat-menu-item (click)="showUsers()" *ngIf="isAdmin">Users</button>
+        <button mat-menu-item (click)="toggleTheme.emit()">Toggle theme</button>
+        <button mat-menu-item (click)="logOut()">Log out</button>
+    </mat-menu>    
+</mat-toolbar>

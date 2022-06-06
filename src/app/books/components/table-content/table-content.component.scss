@@ -1,0 +1,39 @@
+.table_align{
+  width: 100%;
+  justify-content: space-around;
+  height: auto;
+}
+.mat-row:hover {
+  background-color:#3D5AFE;
+}
+
+.inner{
+  text-align: center;
+  padding: 20px;
+}
+
+.table-image{
+  max-width: 50px;
+  max-height: 40px;
+  margin-right: 10px;
+
+  // display: block;
+  margin: auto;
+}
+
+.desc_cell{
+  overflow: auto;
+  max-width: 330px;
+  text-align: justify;
+  padding: 10px;
+}
+
+.inputFilter{
+  margin: 1px;
+}
+
+.right{
+  float: right;
+  margin-right: 80px;
+  font-size: 4rem;
+}

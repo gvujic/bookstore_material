@@ -1,0 +1,18 @@
+<mat-card class="card">
+    <mat-card-header>
+        <mat-card-title>
+            <p>
+                Welcome to book store {{user != undefined ? user : ''}}
+            </p>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" class="" (click)="loadBooks()">
+            Checkout books
+        </button>
+        <button mat-raised-button color="primary" (click)="loadUsers()" *ngIf="isAdmin">
+            Checkout users
+        </button>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,37 @@
+$iconWidth:56px;
+
+.sidenav-toggle{
+    display: none;
+    padding: 0px;
+    margin: 8px;
+    min-width: $iconWidth;
+
+    @media (max-width:720px){
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    mat-icon{
+        font-size: 30px;
+        height: $iconWidth;
+        width: $iconWidth;
+        line-height: $iconWidth;
+        color: white;
+    }
+}
+
+.menu-btn-position {
+    flex: 1 1 auto;
+}
+
+.toolbar_style{
+
+    position: sticky;
+    position: -webkit-sticky; /* For macOS/iOS Safari */
+    top: 0; /* Sets the sticky toolbar to be on top */
+    z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
+
+

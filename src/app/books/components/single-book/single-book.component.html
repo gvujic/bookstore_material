@@ -1,0 +1,29 @@
+<mat-card *ngIf="book" >
+    <mat-card-title-group class="card">
+        <mat-card-title>{{book?.title}}</mat-card-title>
+        <mat-card-subtitle>{{book?.author}}</mat-card-subtitle>
+        <!-- <img mat-card-xl-image src='/assets/{{book?.title}}.jpg' onerror="this.src='/assets/book.jpeg'"> -->
+        <img mat-card-xl-image [src]='getBookImage(book)'>
+    </mat-card-title-group>
+
+    <mat-card-content>
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Details">
+                <p class="mat-tab" >
+                    Price: {{book?.price | currency}} <br>
+                    Pages: {{book?.pagesNumber}}
+                </p>
+            </mat-tab>
+            <mat-tab label="Description">
+                <p class="mat-tab">
+                    {{book?.description}}
+                </p>
+            </mat-tab>
+            <mat-tab label="Genre">
+                <p class="mat-tab">
+                    {{book.bookGenreId | genreName : genres}}
+                </p>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>    

@@ -1,0 +1,40 @@
+<app-toolbar (sidenavToggle)="sidenav.toggle()" (toggleTheme)="toggleTheme()" [class.dark-theme]="isDarkTheme"></app-toolbar>
+<mat-sidenav-container class="app-sidenav-container" [class.dark-theme]="isDarkTheme">
+  <mat-sidenav #sidenav class="app-sidenav" 
+                        [opened]="!isScreenSmall"
+                        [mode]="isScreenSmall ? 'over' : 'side'" >
+    <mat-toolbar color="primary">
+      <button mat-button [matMenuTriggerFor]="main_menu" class="genres-btn">Genres</button>
+    </mat-toolbar>
+
+      <mat-menu #main_menu="matMenu">
+        <div *ngIf="vm$ | async as vm">
+          <ng-container *ngFor="let genre of vm.genres">
+            <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ genre.name }} ({{genre.books.length}})</button>
+            <mat-menu #sub_menu="matMenu">
+              <button *ngFor="let book of genre.books" mat-menu-item (click)="showBookDetails(book)">{{ book.title }}</button>
+            </mat-menu>
+          </ng-container>
+        </div>
+      </mat-menu>
+
+    <div *ngIf="vm$ | async as vm">
+      <h3 class="authors">Authors</h3>
+      <ng-container *ngFor="let author of vm.authors">
+        <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ author.name }} ({{author.authorBooks.length}})
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #sub_menu="matMenu">
+          <button *ngFor="let book of author.authorBooks" mat-menu-item (click)="showBookDetails(book)">{{ book.title }}</button>
+        </mat-menu>
+      </ng-container>
+    </div>
+
+  </mat-sidenav>
+  
+  <div class="app-sidenav-content">
+      <div class="wrapper">
+          <router-outlet></router-outlet>
+      </div>
+  </div>  
+</mat-sidenav-container>

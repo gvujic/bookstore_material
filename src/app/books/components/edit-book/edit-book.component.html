@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Add new book</h2>
+<mat-dialog-content [formGroup]="editBookForm">
+    <div class="example-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" required="">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Author</mat-label>
+            <input matInput formControlName="author" required="">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Genre</mat-label>
+            <mat-select formControlName="bookGenreId"> 
+                <mat-option *ngFor="let genre of genres" [value]="genre.id" >
+                  {{genre.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <em *ngIf="editBookForm.controls['price'].invalid && editBookForm.controls['price'].dirty">Required</em>
+            <em *ngIf="editBookForm.controls['price'].invalid && editBookForm.controls['price'].dirty && 
+                 editBookForm.controls['price'].errors?.pattern">Must use numbers only</em>
+            <mat-label>Price</mat-label>
+            <input matInput formControlName="price" required="">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <em *ngIf="editBookForm.controls['pagesNumber'].invalid && editBookForm.controls['pagesNumber'].dirty">Required</em>
+            <em *ngIf="editBookForm.controls['pagesNumber'].invalid && editBookForm.controls['pagesNumber'].dirty && 
+                 editBookForm.controls['pagesNumber'].errors?.pattern">Must use numbers only</em>
+            <mat-label>Number of pages</mat-label>
+            <input matInput formControlName="pagesNumber" required="">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" required="">
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="saveBook()" [disabled]="editBookForm.invalid">
+        <mat-icon>save</mat-icon> Save
+    </button>
+    <button mat-button color="primary" (click)="dismiss()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+</mat-dialog-actions>

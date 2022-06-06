@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" class="mat-elevation-z15 toolbar_style">
+
+    <button mat-button matTooltip="Go to home page" (click)="navigateHome()">
+        <mat-icon>home</mat-icon>
+    </button>
+
+    <span class="menu-btn-position "></span>
+    <button mat-button [matMenuTriggerFor]="appMenu">
+        <mat-icon >more_vert</mat-icon>
+    </button>
+    <mat-menu #appMenu>
+        <button mat-menu-item (click)="navigateBooks()">Books</button>
+        <button mat-menu-item  (click)="logOut()">Log out</button>
+    </mat-menu>    
+</mat-toolbar>

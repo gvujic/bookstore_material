@@ -1,0 +1,12 @@
+.card{
+    width: 350px;
+    height: 200px;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 10%;
+  
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+  }

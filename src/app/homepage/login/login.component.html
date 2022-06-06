@@ -1,0 +1,23 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title style="margin-bottom: 10px;">Log in</mat-card-title>
+        </mat-card-header>
+        <form [formGroup]="loginForm" class="example-form">
+            <mat-card-content>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <input matInput placeholder="User name" formControlName="userName"> 
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="fill"> 
+                    <input matInput [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password">
+                    <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                        {{showPassword?'visibility_off':'visibility'}}                    </mat-icon>
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-stroked-button color="accent" class="btn-block" (click)="logIn()"> Log in</button>
+            <button mat-stroked-button class="btn-block" (click)="registerUser()" style="margin-top: 5px;"> Register </button>
+        </form>
+        <p style="color: red;">{{errorMessage}}</p>
+
+    </mat-card>
+</div>

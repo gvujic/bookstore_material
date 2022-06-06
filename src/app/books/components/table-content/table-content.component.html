@@ -1,0 +1,72 @@
+<mat-form-field appearance="standard">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" class="inputFilter" placeholder="Ex. ium" #input>
+</mat-form-field>
+  <mat-icon class="right" matTooltip="Add new book" (click)="openAddBookDialog()">
+    add_circle
+  </mat-icon>
+
+  <div class="mat-elevation-z10" >
+        <table mat-table matSort [dataSource]="dataSource" class="table_align">
+
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let book" class="inner">
+              <img mat-card-image [src]="getBookImage(book)" class="table-image" (click)="showBookDetails(book)">
+            </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Title </th>
+            <td mat-cell *matCellDef="let book" (click)="showBookDetails(book)"> {{book.title}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="author">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Author </th>
+            <td mat-cell *matCellDef="let book" (click)="showBookDetails(book)"> {{book.author}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="bookGenreId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Genre </th>
+            <td mat-cell *matCellDef="let book" (click)="showBookDetails(book)"> {{book.bookGenreId | genreName:genres}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="pagesNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Pages </th>
+            <td mat-cell *matCellDef="let book" (click)="showBookDetails(book)"> {{book.pagesNumber}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Price </th>
+            <td mat-cell *matCellDef="let book" (click)="showBookDetails(book)"> {{book.price | currency}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Description </th>
+            <td mat-cell *matCellDef="let book" class="desc_cell" (click)="showBookDetails(book)"> {{book.description }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="buttons">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let book">
+              <button mat-raised-button (click)="openEditBookDialog(book)"
+                class="demo-button" style="margin-right: 5px;" matTooltip="Edit book">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-raised-button (click)="openRemoveBookDialog(book)"
+                class="demo-button" matTooltip="Delete book">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
