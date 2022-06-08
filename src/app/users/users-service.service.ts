@@ -10,7 +10,6 @@ export class UserService{
 
     getAuthorisation(user:any):Observable<any>{
         return this.http.post<User>(environment.serverAddress + 'users', user)
-        // .pipe(catchError(this.handleError<any>('getAuthorisation')))
     }
 
     getAllUsers():Observable<User[]>{

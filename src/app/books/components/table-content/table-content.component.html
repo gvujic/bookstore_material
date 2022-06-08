@@ -2,7 +2,7 @@
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" class="inputFilter" placeholder="Ex. ium" #input>
 </mat-form-field>
-  <mat-icon class="right" matTooltip="Add new book" (click)="openAddBookDialog()">
+  <mat-icon class="right" matTooltip="Add new book" [matTooltipPosition]="'above'" (click)="openAddBookDialog()">
     add_circle
   </mat-icon>
 

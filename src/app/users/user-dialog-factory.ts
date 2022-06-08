@@ -45,7 +45,8 @@ export class UserManager{
 export class AddUser extends UserManager{
     public override ManageUser(): void {
         let dialogRef = this.dialog.open(EditUserComponent, {
-            data: new User()
+            data: new User(),
+            width:'450px'
         })
 
         dialogRef.afterClosed().subscribe(result => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserFacade } from 'src/app/users/users-facade';
 
@@ -7,21 +7,21 @@ import { UserFacade } from 'src/app/users/users-facade';
   templateUrl: './home-page-toolbar.component.html',
   styleUrls: ['./home-page-toolbar.component.scss']
 })
-export class HomePageToolbarComponent {
+export class HomePageToolbarComponent implements OnInit {
   userLogged:boolean = false
   logState:string = ''
-  constructor(private router:Router, private facade:UserFacade) { 
+  constructor(private router:Router, private facade:UserFacade) {}
+  
+  ngOnInit(): void {
     this.facade.authorised$.subscribe(result => {
       console.log("HomePageToolbarComponent result: " + result)
       if(result){
         this.logState = 'logout'
         this.userLogged = true
-        this.router.navigate(['home/login'])
       }else{
         this.logState = 'login'
         localStorage.clear()
         this.userLogged = false
-        this.router.navigate(['home/login'])
       }
     })
   }

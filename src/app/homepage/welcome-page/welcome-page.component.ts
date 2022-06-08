@@ -11,7 +11,6 @@ export class WelcomePageComponent {
   isAdmin:boolean = false
 
   constructor(private router:Router) {
-
     this.user = localStorage.getItem('user')
     this.isAdmin = localStorage.getItem('role') == 'admin'
    }
@@ -23,5 +22,4 @@ export class WelcomePageComponent {
   loadUsers(){
     this.router.navigate(['/users/table'])
   }
-
 }

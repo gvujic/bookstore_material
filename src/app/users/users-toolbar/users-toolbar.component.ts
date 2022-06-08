@@ -11,7 +11,7 @@ export class UsersToolbarComponent {
   constructor(private router:Router, private facade:UserFacade) {} 
 
   navigateHome(){
-    this.router.navigate(['/home'])
+    this.router.navigate(['home/'])
   }
 
   navigateBooks(){

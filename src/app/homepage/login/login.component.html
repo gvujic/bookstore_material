@@ -14,7 +14,7 @@
                         {{showPassword?'visibility_off':'visibility'}}                    </mat-icon>
                 </mat-form-field>
             </mat-card-content>
-            <button mat-stroked-button color="accent" class="btn-block" (click)="logIn()"> Log in</button>
+            <button mat-stroked-button color="accent" class="btn-block" (click)="logIn()" [disabled]="loginForm.invalid"> Log in</button>
             <button mat-stroked-button class="btn-block" (click)="registerUser()" style="margin-top: 5px;"> Register </button>
         </form>
         <p style="color: red;">{{errorMessage}}</p>

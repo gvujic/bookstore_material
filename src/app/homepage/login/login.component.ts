@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/books/models/User';
 import { UserDialogFactory, UserOperation } from '../../users/user-dialog-factory';
@@ -9,7 +9,7 @@ import { UserFacade } from '../../users/users-facade';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   loginForm:FormGroup
   showPassword: boolean = false;
@@ -19,7 +19,9 @@ export class LoginComponent {
       userName: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     })
-
+  }
+  
+  ngOnInit(): void {
     this.facade.errorMessage$.subscribe(error => {
       this.errorMessage = error
     })

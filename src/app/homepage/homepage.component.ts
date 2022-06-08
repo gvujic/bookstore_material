@@ -14,7 +14,6 @@ export class HomepageComponent {
   constructor(private router:Router){
       this.user = localStorage.getItem('user')
       this.isAdmin = localStorage.getItem('role') == 'admin'
-
   }
 
   loadBooks(){
@@ -24,9 +23,4 @@ export class HomepageComponent {
   loadUsers(){
     this.router.navigate(['/users/table'])
   }
-
-  // logout(){
-  //   localStorage.clear()
-  //   this.router.navigate(['/login'])
-  // }
 }

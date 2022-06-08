@@ -1,5 +1,5 @@
 <div class="add_button">
-  <mat-icon class="right" matTooltip="Add new user" (click)="addUser()">
+  <mat-icon class="right" (click)="addUser()" matTooltip="Add user" [matTooltipPosition]="'above'">
     add_circle
   </mat-icon> 
 </div> 
@@ -8,19 +8,9 @@
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" class="inputFilter" placeholder="Ex. ium" #input>
 </mat-form-field>
-
-
   
     <div class="table mat-elevation-z10" >
           <table mat-table matSort [dataSource]="dataSource" class="table_align">
-  
-            <!-- <ng-container matColumnDef="image">
-              <th mat-header-cell *matHeaderCellDef> </th>
-              <td mat-cell *matCellDef="let book" class="inner">
-                <img mat-card-image [src]="getBookImage(book)" class="table-image">
-              </td>
-            </ng-container> -->
-        
             <ng-container matColumnDef="userName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header > User name </th>
               <td mat-cell *matCellDef="let user"> {{user.userName}} </td>

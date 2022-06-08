@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, distinctUntilChanged, map } from "rxjs";
+import { BehaviorSubject, concatMap, distinctUntilChanged, map } from "rxjs";
 import { User } from "../books/models/User";
 import { UserService } from "./users-service.service";
 
@@ -26,34 +26,33 @@ export class UserFacade{
     authorised$ = this.state$.pipe(map(state => state.authorised), distinctUntilChanged())
 
     constructor(private userService: UserService, private router:Router){
-
         this.userService.getAllUsers().subscribe(users => {
             this.updateState({..._state, users})
         })
     }
 
     addUser(user:User){
-        this.userService.registerUser(user).subscribe(() => {
-            this.userService.getAllUsers().subscribe(users => {
-                this.updateState({..._state, users})
-            })
-        })
+        this.userService.registerUser(user).pipe(
+            concatMap(() => this.userService.getAllUsers().pipe(
+                map(users => this.updateState({..._state, users}))
+            ))
+        ).subscribe()
     }
 
     deleteUser(user:User){
-        this.userService.deleteUser(user).subscribe(() => {
-            this.userService.getAllUsers().subscribe(users => {
-                this.updateState({..._state, users})
-            })
-        })
+        this.userService.deleteUser(user).pipe(
+            concatMap(() => this.userService.getAllUsers().pipe(
+                map(users => this.updateState({..._state, users}))
+            ))
+        ).subscribe()
     }
 
     updateUser(user:User){
-        this.userService.updateUser(user).subscribe(() => {
-            this.userService.getAllUsers().subscribe(users => {
-                this.updateState({..._state, users})
-            })
-        })
+        this.userService.updateUser(user).pipe(
+            concatMap(() => this.userService.getAllUsers().pipe(
+                map(users => this.updateState({..._state, users}))
+            ))
+        ).subscribe()            
     }
 
     provideAutorisation(user:User){
@@ -65,7 +64,7 @@ export class UserFacade{
             localStorage.setItem('role', result.role)
 
             let authorised = true
-            this.updateState({..._state, authorised})
+            this.updateState({..._state, authorised })
             this.router.navigate(['home/welcome'])
 
             this.errorOccurredSubject.next('')
@@ -76,16 +75,13 @@ export class UserFacade{
     }
 
     logout(){
-        console.log("facade = logout")
-        localStorage.clear()
+        localStorage.clear()        
         let authorised = false
-        this.updateState({..._state, authorised})
-        this.router.navigate(['home/login'])
+        this.updateState({..._state, authorised })
+        this.router.navigate(['home/welcome'])
     }
 
     private updateState(state:UsersState){
-        console.log("updateState: ")
-        console.table(state)
         this.store.next((_state = state))
     }
 }
