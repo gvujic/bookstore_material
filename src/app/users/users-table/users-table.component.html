@@ -1,15 +1,15 @@
 <div class="table_features">
-  <mat-icon class="add" (click)="addUser()" matTooltip="Add user" [matTooltipPosition]="'above'">
-    add_circle
-  </mat-icon> 
-
   <mat-form-field appearance="standard" >
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" class="inputFilter" #input>
   </mat-form-field>
+
+  <button mat-raised-button class="button_add">
+    <mat-icon class="add" (click)="addUser()" matTooltip="Add user" [matTooltipPosition]="'above'">
+      person_add
+    </mat-icon> 
+  </button>
 </div> 
-
-
   
 <div class="table mat-elevation-z10" >
     <table mat-table matSort [dataSource]="dataSource" class="table_align">
