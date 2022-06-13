@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core"
 import { MatDialog } from "@angular/material/dialog"
 import { MatSnackBar } from "@angular/material/snack-bar"
 import { BooksFacade } from "./books.facade"
+import { CommentBookComponent } from "./components/comment-book-component/comment-book-component.component"
 import { DeleteBookComponent } from "./components/delete-book/delete-book.component"
 import { EditBookComponent } from "./components/edit-book/edit-book.component"
 import { SingleBookComponent } from "./components/single-book/single-book.component"
@@ -23,6 +24,8 @@ export class DialogComponentFactory{
                 return new DataDelete(dialogModel, this.facade, this._snackBar, this.dialog)
             case DataOperation.Update:
                 return new DataUpdate(dialogModel, this.facade, this._snackBar, this.dialog)
+            case DataOperation.Comment:
+                return new DataComment(dialogModel, this.facade, this._snackBar, this.dialog)
             default:
                 return new DataShow(dialogModel, this.facade, this._snackBar, this.dialog)
         }
@@ -102,9 +105,27 @@ export class DataShow extends DataManager {
     }
 }
 
+export class DataComment extends DataManager{
+    public override ManageData(): void {
+        let dialogRef = this.dialog.open(CommentBookComponent, {
+            width:"650px",
+            data: this.dialogModel
+        })
+
+        dialogRef.afterClosed().subscribe(result => {
+            if(!result) return
+
+            console.table(result)
+            this.facade.comment(result)
+            this.openSnackBar('Comment saved: ' + result.title)
+        })
+    }
+}
+
 export enum DataOperation {
     Add, 
     Update, 
     Delete,
-    Show
+    Show,
+    Comment
 }

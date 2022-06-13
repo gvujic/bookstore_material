@@ -13,12 +13,14 @@ export interface BookState {
     books:Book[]
     authors:Author[]
     genres:BookGenre[]
+    comments:Comment[]
 }
 
 let _state: BookState = {
     books:[],
     authors:[],
-    genres:[]
+    genres:[],
+    comments:[]
 }
 
 @Injectable()
@@ -29,10 +31,11 @@ export class BooksFacade {
     books$ = this.state$.pipe(map(state => state.books), distinctUntilChanged())
     authors$ = this.state$.pipe(map(state => state.authors), distinctUntilChanged())
     genres$ = this.state$.pipe(map(state => state.genres), distinctUntilChanged())
+    comments$ = this.state$.pipe(map(state => state.comments), distinctUntilChanged())
 
-    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$]).pipe(
-        map(([books, authors, genres]) => {
-            return { books, authors, genres }
+    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$, this.comments$]).pipe(
+        map(([books, authors, genres, comments]) => {
+            return { books, authors, genres, comments }
         })
     )
 
@@ -43,6 +46,10 @@ export class BooksFacade {
 
         this.service.getAllBookGenres().subscribe((genres) => {
             this.updateState({..._state, genres})
+        })
+
+        this.service.getAllComments().subscribe((comments) => {
+            this.updateState({..._state, comments})
         })
     }
 
@@ -96,6 +103,17 @@ export class BooksFacade {
                 map(genres => this.updateState({..._state, genres}))
             ))
         ).subscribe()
+    }
+
+    comment(comment:Comment){
+        this.service.commentBook(comment).pipe(
+            concatMap(() => this.service.getAllBooks().pipe(
+                map(books => this.updateState({..._state, books}))
+            )),
+            concatMap(() => this.service.getAllComments().pipe(
+                map(comments => this.updateState({..._state, comments}))
+            ))
+        ).subscribe()  
     }
 
     private getBooksByAuthor(author:string, books:Book[]):Book[]{

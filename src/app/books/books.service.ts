@@ -37,6 +37,19 @@ export class BooksService{
         .pipe(catchError(this.handleError<Book[]>('removeBook')))
     }
 
+    commentBook(comment:Comment){
+        const options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+        const body = JSON.stringify(comment);
+        return this.http.post<Comment>(environment.serverAddress + "comments", body, options)
+    }
+
+    getAllComments():Observable<Comment[]>{
+        return this.http.get<Comment[]>(environment.serverAddress + "comments")
+        .pipe(catchError(this.handleError<Comment[]>('getAllComments')))
+    }
+
+    
+
     private handleError<T>(operation = "operation", result?: T){ // defaultni parametar i opcioni
         return (error:any): Observable<T> => {
           console.error(error);

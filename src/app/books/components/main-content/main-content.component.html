@@ -1,14 +1,21 @@
 <div class="flex-container" *ngIf="vm$ | async as vm">
     <div class="flex-item" *ngFor="let book of vm.books" >
-        <mat-card class="example-card" *ngIf="book" (click)="showBookDialog(book)" >
-            <mat-card-header>
-                <div mat-card-avatar ></div>
+        <mat-card class="example-card" *ngIf="book">
+            <mat-card-header class="card_content" (click)="showBookDialog(book)">
                 <mat-card-title>{{book?.title}}</mat-card-title>
                 <mat-card-subtitle>{{book?.author}}</mat-card-subtitle>
             </mat-card-header>
-            <!-- <img mat-card-md-image src='/assets/{{book?.title}}.jpg' onerror="this.src='/assets/book.jpeg'"> -->
-            <img mat-card-md-image [src]='getBookImage(book)'>
-        </mat-card>     
+
+            <mat-card-content class="card_content" (click)="showBookDialog(book)">
+                <img mat-card-md-image [src]='getBookImage(book)'>
+            </mat-card-content>
+
+            <mat-card-actions class="card_content">
+                <button mat-button (click)="postComment(book)"> <mat-icon>chat</mat-icon> Comment {{'('  + book.comments.length +')'}}</button>
+                <button mat-button> <mat-icon>thumb_up</mat-icon> Like</button>
+            </mat-card-actions> 
+        </mat-card> 
+   
     </div>
 </div>
       

@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{headline}}</h2>
+<mat-dialog-content [formGroup]="commentForm">
+    <div class="example-container">
+        <mat-form-field class="example-full-width" appearance="fill"  style="width: 100%;">
+            <input matInput placeholder="Type your comment on book" formControlName="plainComment"> 
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="postComment()">
+        <mat-icon>save</mat-icon> Post
+    </button>
+    <button mat-button color="primary" (click)="dismiss()">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+</mat-dialog-actions>
+
+

@@ -34,4 +34,8 @@ export class MainContentComponent implements OnInit {
   ngOnDestroy(): void {
     this.subsctiption.unsubscribe();
   }
+
+  postComment(book:Book){
+      this.dialogFactory.create(DataOperation.Comment, {book:book, genres:this.genres}).ManageData()
+  }
 }

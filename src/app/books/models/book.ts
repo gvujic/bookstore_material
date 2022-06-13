@@ -6,4 +6,5 @@ export class Book{
     description:string
     price:number
     bookGenreId:number
+    comments:Comment[]
 }

@@ -24,6 +24,7 @@ import { AuthguardService } from '../homepage/login/authguard.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AdminAuthguardService } from '../homepage/login/admin-authguard.service';
 import { UserFacade } from '../users/users-facade';
+import { CommentBookComponent } from './components/comment-book-component/comment-book-component.component';
 
 const routes: Routes = [
   { path:'', component:BooksComponent,
@@ -46,7 +47,8 @@ const routes: Routes = [
     TableContentComponent,
     DeleteBookComponent,
     SingleBookComponent,
-    EditBookComponent
+    EditBookComponent,
+    CommentBookComponent
     ],
   imports: [
     CommonModule,

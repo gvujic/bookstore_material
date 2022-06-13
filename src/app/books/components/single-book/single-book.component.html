@@ -8,6 +8,11 @@
 
     <mat-card-content>
         <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Genre">
+                <p class="mat-tab">
+                    {{book.bookGenreId | genreName : genres}}
+                </p>
+            </mat-tab>
             <mat-tab label="Details">
                 <p class="mat-tab" >
                     Price: {{book?.price | currency}} <br>
@@ -19,11 +24,18 @@
                     {{book?.description}}
                 </p>
             </mat-tab>
-            <mat-tab label="Genre">
-                <p class="mat-tab">
-                    {{book.bookGenreId | genreName : genres}}
+            <mat-tab label="Comments" *ngIf="book.comments.length > 0">
+                <p *ngFor="let comment of comments">
+                    <span style="font-weight: bold;">
+                        {{comment.date |  date:'short'}}  - {{comment.userName}}
+                    </span>
+                    <br>
+                    <span style="margin-left: 50x; color: blue; font-size: large;">
+                        {{comment.plainComment}}
+                    </span>
                 </p>
             </mat-tab>
+
         </mat-tab-group>
     </mat-card-content>
 </mat-card>    
