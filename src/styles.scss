@@ -22,5 +22,7 @@ $candy-app-theme: mat.define-light-theme(
     @include mat.all-component-themes($theme-dark);
 }
 
-html, body { height: 100%; }
+html, body {
+    height: 100%;
+    background-color: gray;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

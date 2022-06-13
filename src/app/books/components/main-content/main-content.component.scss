@@ -2,19 +2,16 @@
   cursor: pointer;
   width: 300px;
   height: 300px;
-  min-height: 300px;
-  margin-top: 15px;
 }
-
-.mat-tab{
-  padding-top: 10px;
-}
-
 
 .flex-container{
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
+
+  gap:10px 10px; //rows gap columns gap
+
+  background-color: gray;
 }
 
 .flex-item{
@@ -23,6 +20,6 @@
 }
 
 .mat-card:hover{
-  background-color:#3D5AFE;
-
+  background-color:lightgray;
 }
+

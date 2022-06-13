@@ -1,18 +1,25 @@
-<mat-card class="card">
-    <mat-card-header>
-        <mat-card-title>
-            <p>
-                Welcome to book store {{user != undefined ? user : ''}}
-            </p>
-        </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-actions>
-        <button mat-raised-button color="primary" class="" (click)="loadBooks()">
+<div class="container">
+    <mat-toolbar class="item header mat-elevation-z15" color="primary">
+        <img src="/assets/book.jpeg" class="img">
+        <h1> {{welcomeMsg}}</h1>
+        <button mat-button 
+        (click)="log()"> 
+            <mat-icon>person</mat-icon> 
+            {{logState}}
+        </button>
+    </mat-toolbar>
+    <div class="item main">
+        <button mat-raised-button color="primary" (click)="loadBooks()" class="loadBtn">
             Checkout books
         </button>
-        <button mat-raised-button color="primary" (click)="loadUsers()" *ngIf="isAdmin">
+        <button mat-raised-button color="primary" (click)="loadUsers()" class="loadBtn" *ngIf="isAdmin">
             Checkout users
         </button>
-    </mat-card-actions>
-</mat-card>
+    </div>
+    <div class="item footer">
+        <mat-toolbar color="primary">
+            Visit us at  
+            <mat-icon>facebook</mat-icon>
+        </mat-toolbar>
+    </div>
+</div>

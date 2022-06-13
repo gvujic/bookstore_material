@@ -28,7 +28,7 @@ export class ToolbarComponent {
   }
 
   homePage(){
-    this.router.navigate(['/home'])
+    this.router.navigate(['/home/welcome'])
   }
 
   logOut(){

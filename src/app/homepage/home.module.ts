@@ -4,7 +4,6 @@ import { MaterialModule } from '../shared/material.module';
 import { HomepageComponent } from './homepage.component';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import { HomePageToolbarComponent } from './home-page-toolbar/home-page-toolbar.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -29,7 +28,6 @@ const routes: Routes = [
   declarations: [
     HomepageComponent,
     WelcomePageComponent,
-    HomePageToolbarComponent,
     LoginComponent
   ],
 })

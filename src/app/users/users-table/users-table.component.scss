@@ -1,24 +1,20 @@
+.table_features{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
 .table_align{
-    width: 100%;
-    justify-content: space-around;
-    height: auto;
-  }
+  width: 100%;
+  justify-content: space-between;
+}
 
-  .right{
-    font-size: 4rem;
-    margin-right: 50px;
-    cursor: pointer;
-  }
+.add{
+  font-size: 3rem;
+  cursor: pointer;
+}
 
-  .mat-row:hover {
-    background-color:#3D5AFE;
-  }
-
-  .table{
-    width: 60%;
-  }
-
-  .add_button{
-    width: 60%;
-    text-align: right;
-  }
+.mat-row:hover {
+  background-color:lightgray;
+}

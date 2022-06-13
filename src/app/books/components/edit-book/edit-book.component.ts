@@ -12,9 +12,15 @@ import { BookGenre } from '../../models/bookGenre';
 export class EditBookComponent{
   book:Book
   genres:BookGenre[]
+  headline:string = ''
   editBookForm:FormGroup
   constructor(private dialogRef: MatDialogRef<EditBookComponent>,
     @Inject(MAT_DIALOG_DATA) data:any) {
+      if(data.book.id){
+        this.headline = 'Edit book'
+      }else{
+        this.headline = 'Add new book'
+      }
       this.book = data.book,
       this.genres = data.genres
 
