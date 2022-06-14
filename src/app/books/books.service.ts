@@ -4,6 +4,8 @@ import { catchError, Observable, of } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Book } from "./models/book";
 import { BookGenre } from "./models/bookGenre";
+import { BooksComment } from "./models/booksComment";
+import { BooksThumbsUp } from "./models/booksThumbsUp";
 
 @Injectable()
 export class BooksService{
@@ -37,10 +39,21 @@ export class BooksService{
         .pipe(catchError(this.handleError<Book[]>('removeBook')))
     }
 
-    commentBook(comment:Comment){
+    commentBook(comment:BooksComment){
         const options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
         const body = JSON.stringify(comment);
         return this.http.post<Comment>(environment.serverAddress + "comments", body, options)
+    }
+
+    setThumbsUp(thumbsUp:BooksThumbsUp){
+        const options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+        const body = JSON.stringify(thumbsUp);
+        return this.http.post<BooksThumbsUp>(environment.serverAddress + "thumbsup", body, options)        
+    }
+
+    getAllThubmsUps():Observable<BooksThumbsUp[]>{
+        return this.http.get<BooksThumbsUp[]>(environment.serverAddress+ "thumbsup")
+        .pipe(catchError(this.handleError<BooksThumbsUp[]>('getAllThubmsUps')))
     }
 
     getAllComments():Observable<Comment[]>{
@@ -48,13 +61,10 @@ export class BooksService{
         .pipe(catchError(this.handleError<Comment[]>('getAllComments')))
     }
 
-    
-
     private handleError<T>(operation = "operation", result?: T){ // defaultni parametar i opcioni
         return (error:any): Observable<T> => {
           console.error(error);
           return of(result as T);
         }
     }
-
 }

@@ -117,7 +117,7 @@ export class DataComment extends DataManager{
 
             console.table(result)
             this.facade.comment(result)
-            this.openSnackBar('Comment saved: ' + result.title)
+            this.openSnackBar('Comment saved')
         })
     }
 }

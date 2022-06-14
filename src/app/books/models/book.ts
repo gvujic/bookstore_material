@@ -1,3 +1,5 @@
+import { BooksComment } from "./booksComment"
+import { BooksThumbsUp } from "./booksThumbsUp"
 export class Book{
     id:number
     title:string
@@ -6,5 +8,6 @@ export class Book{
     description:string
     price:number
     bookGenreId:number
-    comments:Comment[]
+    comments:BooksComment[]
+    thumbsUps:BooksThumbsUp[]
 }

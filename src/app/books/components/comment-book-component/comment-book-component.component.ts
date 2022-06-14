@@ -1,6 +1,4 @@
-import { formatCurrency } from '@angular/common';
-import { FnParam } from '@angular/compiler/src/output/output_ast';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -22,7 +20,7 @@ export class CommentBookComponent {
       plainComment: new FormControl('', Validators.required),
       date: new FormControl(new Date())
     })
-   }
+  }
 
   postComment(){
     this.dialogRef.close(this.commentForm.value)

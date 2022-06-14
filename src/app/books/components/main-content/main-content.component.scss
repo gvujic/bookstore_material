@@ -32,3 +32,17 @@
   justify-content: center;
 }
 
+.liked{
+  color: blue;
+}
+
+.not_liked{
+  color: black;
+}
+
+::ng-deep .tooltip {
+  background-color: blue;
+  font-size: 20px;
+}
+
+

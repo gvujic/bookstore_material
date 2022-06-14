@@ -4,6 +4,7 @@ import { Book } from '../../models/book';
 import { BookGenre } from '../../models/bookGenre';
 import { BooksFacade, BookState } from '../../books.facade';
 import { DataOperation, DialogComponentFactory } from '../../dialog-component-factory';
+import { BooksThumbsUp } from '../../models/booksThumbsUp';
 
 @Component({
   selector: 'app-main-content',
@@ -11,7 +12,7 @@ import { DataOperation, DialogComponentFactory } from '../../dialog-component-fa
   styleUrls: ['./main-content.component.scss'],
 })
 export class MainContentComponent implements OnInit {
-  subsctiption:Subscription  = new Subscription();
+  subsctiption:Subscription = new Subscription();
   genres:BookGenre[]
   vm$:Observable<BookState> = this.facade.vm$;
   
@@ -31,11 +32,32 @@ export class MainContentComponent implements OnInit {
     return book.description.includes('+') ? '/assets/' + book?.title+ '.jpg' : '/assets/book.jpeg'
   }
 
-  ngOnDestroy(): void {
-    this.subsctiption.unsubscribe();
+  checkComments(book:Book){
+    this.showBookDialog(book);
   }
 
-  postComment(book:Book){
-      this.dialogFactory.create(DataOperation.Comment, {book:book, genres:this.genres}).ManageData()
+  setThumbsUp(book:Book){
+    let userId = 0
+    if(localStorage.getItem('userId')){
+      userId = +localStorage.getItem('userId')!
+    }
+
+    this.facade.thumbsUp(
+      { bookId:book.id,
+        userId: userId,
+        userName:localStorage.getItem('user')!
+      })
+  }
+
+  checkCurrentUserLiked(book:Book):boolean{
+    return book.thumbsUps.filter(x => x.userId === +localStorage.getItem('userId')!).length > 0
+  }
+
+  getAllThubmsUps(thumbs:BooksThumbsUp[]){
+    return thumbs.map((x) =>  x.userName).join(', ')
+  }
+
+  ngOnDestroy(): void {
+    this.subsctiption.unsubscribe();
   }
 }

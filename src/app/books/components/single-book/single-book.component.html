@@ -2,12 +2,27 @@
     <mat-card-title-group class="card">
         <mat-card-title>{{book?.title}}</mat-card-title>
         <mat-card-subtitle>{{book?.author}}</mat-card-subtitle>
-        <!-- <img mat-card-xl-image src='/assets/{{book?.title}}.jpg' onerror="this.src='/assets/book.jpeg'"> -->
         <img mat-card-xl-image [src]='getBookImage(book)'>
     </mat-card-title-group>
 
     <mat-card-content>
-        <mat-tab-group mat-align-tabs="center">
+        <mat-tab-group mat-align-tabs="center" class="tabs">
+            <mat-tab label="Comments">
+                <div class="comment_dialog">
+                    <button mat-button (click)="postComment(book)" matTooltip="Leave your comment"> <mat-icon>chat</mat-icon> Comment</button>
+                </div>
+                <div class="comments" *ngFor="let comment of comments">
+                    <div class="header">
+                       <p>{{comment.userName}}</p> <p>{{comment.date |   date:'short'}}</p> 
+                    </div>
+                    <div class="comment">
+                        {{comment.plainComment}}
+                    </div>
+                </div>
+                <div class="comment" *ngIf="comments.length == 0">
+                    <p>Be first one to comment this book</p>
+                </div>
+            </mat-tab>
             <mat-tab label="Genre">
                 <p class="mat-tab">
                     {{book.bookGenreId | genreName : genres}}
@@ -24,18 +39,6 @@
                     {{book?.description}}
                 </p>
             </mat-tab>
-            <mat-tab label="Comments" *ngIf="book.comments.length > 0">
-                <p *ngFor="let comment of comments">
-                    <span style="font-weight: bold;">
-                        {{comment.date |  date:'short'}}  - {{comment.userName}}
-                    </span>
-                    <br>
-                    <span style="margin-left: 50x; color: blue; font-size: large;">
-                        {{comment.plainComment}}
-                    </span>
-                </p>
-            </mat-tab>
-
         </mat-tab-group>
     </mat-card-content>
 </mat-card>    

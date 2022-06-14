@@ -58,10 +58,10 @@ export class UserFacade{
     provideAutorisation(user:User){
         this.userService.getAuthorisation(user).subscribe(result => {
             if(!result) return
-
             localStorage.setItem('jwt', result.token)
             localStorage.setItem('user', result.user)
             localStorage.setItem('role', result.role)
+            localStorage.setItem('userId', result.id)
 
             let authorised = true
             this.updateState({..._state, authorised })

@@ -46,6 +46,16 @@
             <td mat-cell *matCellDef="let book" class="desc_cell" (click)="showBookDetails(book)"> {{book.description }} </td>
           </ng-container>
 
+          <ng-container matColumnDef="comments">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Comments </th>
+            <td mat-cell *matCellDef="let book" class="desc_cell" (click)="showBookDetails(book)"> {{book.comments.length }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="thumbsUps">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > ThumbsUps </th>
+            <td mat-cell *matCellDef="let book" class="desc_cell" (click)="showBookDetails(book)"> {{book.thumbsUps.length }} </td>
+          </ng-container>
+
           <ng-container matColumnDef="buttons">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let book">

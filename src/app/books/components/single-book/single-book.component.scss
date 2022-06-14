@@ -2,7 +2,43 @@
     height: 300px;
     width: 600px;
 }
-
-p{
-    margin: 10px;
+.tabs{
+    max-height: 250px;
+     overflow: auto;
 }
+
+.comments{
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+
+}
+.comment{
+    margin: 20px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid lightgray 1px;
+    color: gray;
+}
+
+.comment_dialog{
+    text-align: center;
+    margin: 10px;
+    border: solid gray 1px;
+    border-radius: 5%;
+    background-color: lightgray;
+}
+
+.mat-tab{
+    padding: 10px;
+    font-weight: bold;
+    background-color: lightgrey;
+}
+
+
+

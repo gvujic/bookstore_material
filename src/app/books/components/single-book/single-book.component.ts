@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DataOperation, DialogComponentFactory } from '../../dialog-component-factory';
 import { Book } from '../../models/book';
 import { BookGenre } from '../../models/bookGenre';
-import { Comment } from '../../models/comment';
+import { BooksComment } from '../../models/booksComment';
 
 @Component({
   selector: 'app-single-book',
@@ -12,10 +13,12 @@ import { Comment } from '../../models/comment';
 export class SingleBookComponent{
   book:Book
   genres:BookGenre[]
-  comments:Comment[]
+  comments:BooksComment[]
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) data:any) {
+  constructor(@Inject(MAT_DIALOG_DATA) data:any,
+              private dialogFactory:DialogComponentFactory,
+              private dialogRef: MatDialogRef<SingleBookComponent>,) {
                 this.book = data.book
                 this.genres = data.genres
                 this.comments = data.book.comments
@@ -25,7 +28,8 @@ export class SingleBookComponent{
     return book.description.includes('+') ? '/assets/' + book?.title+ '.jpg' : '/assets/book.jpeg'
   }
 
-  log(data:any){
-    console.table(data)
+  postComment(book:Book){
+    this.dialogFactory.create(DataOperation.Comment, {book:book, genres:this.genres}).ManageData()
+    this.dialogRef.close();
   }
 }

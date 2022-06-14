@@ -1,8 +1,11 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, tap } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, Subscription } from "rxjs";
 import { BooksService } from "./books.service";
 import { Book } from "./models/book";
 import { BookGenre } from "./models/bookGenre";
+import { BooksComment } from "./models/booksComment";
+import { BooksThumbsUp } from "./models/booksThumbsUp";
+
 
 export interface Author{
     name:string
@@ -13,44 +16,39 @@ export interface BookState {
     books:Book[]
     authors:Author[]
     genres:BookGenre[]
-    comments:Comment[]
 }
 
 let _state: BookState = {
     books:[],
     authors:[],
-    genres:[],
-    comments:[]
+    genres:[]
 }
 
 @Injectable()
-export class BooksFacade {
+export class BooksFacade implements OnDestroy {
     private store = new BehaviorSubject<BookState>(_state)
     private state$ = this.store.asObservable()
+
+    subsctiption:Subscription = new Subscription();
 
     books$ = this.state$.pipe(map(state => state.books), distinctUntilChanged())
     authors$ = this.state$.pipe(map(state => state.authors), distinctUntilChanged())
     genres$ = this.state$.pipe(map(state => state.genres), distinctUntilChanged())
-    comments$ = this.state$.pipe(map(state => state.comments), distinctUntilChanged())
 
-    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$, this.comments$]).pipe(
-        map(([books, authors, genres, comments]) => {
-            return { books, authors, genres, comments }
+    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$]).pipe(
+        map(([books, authors, genres]) => {
+            return { books, authors, genres }
         })
     )
 
     constructor(private service:BooksService){
-        this.service.getAllBooks().subscribe((books) => {
+        this.subsctiption.add(this.service.getAllBooks().subscribe((books) => {
             this.updateState({..._state, books})
-        })
+        }))
 
-        this.service.getAllBookGenres().subscribe((genres) => {
+        this.subsctiption.add(this.service.getAllBookGenres().subscribe((genres) => {
             this.updateState({..._state, genres})
-        })
-
-        this.service.getAllComments().subscribe((comments) => {
-            this.updateState({..._state, comments})
-        })
+        }))
     }
 
     getAuthors(state:BookState){
@@ -69,51 +67,52 @@ export class BooksFacade {
     }
 
     remove(book:Book){
-        this.service.removeBook(book.id).pipe(
+        this.subsctiption.add(this.service.removeBook(book.id).pipe(
             concatMap(() => this.service.getAllBooks().pipe(
-                tap(books => console.log(JSON.stringify(books))),
                 map(books => this.updateState({..._state, books}))
             )),
             concatMap(() => this.service.getAllBookGenres().pipe(
-                tap(genres => console.log(JSON.stringify(genres))),
                 map(genres => this.updateState({..._state, genres}))
             ))
-        ).subscribe()
+        ).subscribe())
     }
 
     add(book:Book){
-        this.service.insertBook(book).pipe(
+        this.subsctiption.add(this.service.insertBook(book).pipe(
             concatMap(() => this.service.getAllBooks().pipe(
-                tap(x => console.log("get all books")),
                 map(books => this.updateState({..._state, books}))
             )),
             concatMap(() => this.service.getAllBookGenres().pipe(
-                tap(x => console.log("get all genres")),
                 map(genres => this.updateState({..._state, genres}))
             ))
-        ).subscribe()
+        ).subscribe())
     }
 
     update(book:Book){
-        this.service.updateBook(book).pipe(
+        this.subsctiption.add(this.service.updateBook(book).pipe(
             concatMap(() => this.service.getAllBooks().pipe(
                 map(books => this.updateState({..._state, books}))
             )),
             concatMap(() => this.service.getAllBookGenres().pipe(
                 map(genres => this.updateState({..._state, genres}))
             ))
-        ).subscribe()
+        ).subscribe())
     }
 
-    comment(comment:Comment){
-        this.service.commentBook(comment).pipe(
+    comment(comment:BooksComment){
+        this.subsctiption.add(this.service.commentBook(comment).pipe(
             concatMap(() => this.service.getAllBooks().pipe(
                 map(books => this.updateState({..._state, books}))
-            )),
-            concatMap(() => this.service.getAllComments().pipe(
-                map(comments => this.updateState({..._state, comments}))
             ))
-        ).subscribe()  
+        ).subscribe())
+    }
+
+    thumbsUp(thumbsUp:BooksThumbsUp){
+        this.subsctiption.add(this.service.setThumbsUp(thumbsUp).pipe(
+            concatMap(() => this.service.getAllBooks().pipe(
+                map(books => this.updateState({..._state, books}))
+            ))
+        ).subscribe())
     }
 
     private getBooksByAuthor(author:string, books:Book[]):Book[]{
@@ -123,5 +122,9 @@ export class BooksFacade {
     private updateState(state:BookState){
         state.authors = this.getAuthors(state)
         this.store.next((_state = state))
+    }
+
+    ngOnDestroy(): void {
+        this.subsctiption.unsubscribe()
     }
 }

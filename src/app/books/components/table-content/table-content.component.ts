@@ -15,7 +15,8 @@ import { DialogModel } from '../../models/dialogModel';
   styleUrls: ['./table-content.component.scss']
 })
 export class TableContentComponent implements OnDestroy, AfterViewInit{
-  displayedColumns:string[] = ['image','author','title', 'bookGenreId', 'pagesNumber','price','description' ,'buttons']
+  displayedColumns:string[] = ['image','author','title', 'bookGenreId', 'pagesNumber','price','description',
+  'comments','thumbsUps' ,'buttons']
   dataSource:MatTableDataSource<Book>
   genres:BookGenre[]
   subcription:Subscription = new Subscription()

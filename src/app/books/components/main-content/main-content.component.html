@@ -11,11 +11,21 @@
             </mat-card-content>
 
             <mat-card-actions class="card_content">
-                <button mat-button (click)="postComment(book)"> <mat-icon>chat</mat-icon> Comment {{'('  + book.comments.length +')'}}</button>
-                <button mat-button> <mat-icon>thumb_up</mat-icon> Like</button>
+                <button mat-button (click)="setThumbsUp(book)" [disabled]="checkCurrentUserLiked(book)">
+                     <mat-icon [ngClass]="{liked:book.thumbsUps.length > 0, not_liked:book.thumbsUps.length == 0}"
+                        matTooltip="{{getAllThubmsUps(book.thumbsUps)}}"
+                        [matTooltipPosition]="'above'" matTooltipClass="tooltip">
+                        thumb_up
+                    </mat-icon> 
+                     Like {{'('  + book.thumbsUps.length +')'}}
+                </button>
+                <button mat-button (click)="checkComments(book)">
+                    <mat-icon [ngClass]="{liked:book.comments.length > 0, not_liked:book.comments.length == 0}"
+                       matTooltip="Checkout comments">chat</mat-icon>
+                    {{'('  + book.comments.length +')'}}
+               </button>
             </mat-card-actions> 
         </mat-card> 
-   
     </div>
 </div>
       
