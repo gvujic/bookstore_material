@@ -1,11 +1,10 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, Subscription } from "rxjs";
+import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, tap, Observable, Subscription } from "rxjs";
 import { BooksService } from "./books.service";
 import { Book } from "./models/book";
 import { BookGenre } from "./models/bookGenre";
 import { BooksComment } from "./models/booksComment";
 import { BooksThumbsUp } from "./models/booksThumbsUp";
-
 
 export interface Author{
     name:string
@@ -13,13 +12,15 @@ export interface Author{
 }
 
 export interface BookState {
-    books:Book[]
+    books:Book[],
+    filteredBooks:Book[],
     authors:Author[]
     genres:BookGenre[]
 }
 
 let _state: BookState = {
     books:[],
+    filteredBooks:[],
     authors:[],
     genres:[]
 }
@@ -34,16 +35,19 @@ export class BooksFacade implements OnDestroy {
     books$ = this.state$.pipe(map(state => state.books), distinctUntilChanged())
     authors$ = this.state$.pipe(map(state => state.authors), distinctUntilChanged())
     genres$ = this.state$.pipe(map(state => state.genres), distinctUntilChanged())
+    filteredBooks$ = this.state$.pipe(map(state => state.filteredBooks), distinctUntilChanged())
 
-    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$]).pipe(
-        map(([books, authors, genres]) => {
-            return { books, authors, genres }
+    vm$:Observable<BookState> = combineLatest([this.books$, this.authors$, this.genres$, this.filteredBooks$]).pipe(
+        map(([books, authors, genres, filteredBooks]) => {
+            return { books, authors, genres,filteredBooks }
         })
     )
 
     constructor(private service:BooksService){
         this.subsctiption.add(this.service.getAllBooks().subscribe((books) => {
             this.updateState({..._state, books})
+            let filteredBooks = books
+            this.updateState({..._state, filteredBooks})
         }))
 
         this.subsctiption.add(this.service.getAllBookGenres().subscribe((genres) => {
@@ -115,11 +119,24 @@ export class BooksFacade implements OnDestroy {
         ).subscribe())
     }
 
+    searchBook(term:string){        
+        this.subsctiption.add(this.books$.pipe(
+            map(books => {
+                const filteredBooks = books.filter(book => 
+                    book.author.toLocaleLowerCase().includes(term.toLocaleLowerCase()) || 
+                    book.title.toLocaleLowerCase().includes(term.toLocaleLowerCase()))
+                    this.updateState({..._state, filteredBooks})
+                }
+            )
+        ).subscribe())
+    }
+
     private getBooksByAuthor(author:string, books:Book[]):Book[]{
         return books.filter(b => b.author === author)
     }
 
     private updateState(state:BookState){
+        console.log(state)
         state.authors = this.getAuthors(state)
         this.store.next((_state = state))
     }

@@ -4,14 +4,24 @@
         <mat-icon>menu</mat-icon>
     </button>
 
-    <div style="display:flex; justify-content:center; align-items:center;">
+    <div class="toolbar-features">
+          <form class="example-form" [formGroup]="searchForm">
+            <mat-form-field appearance="fill">
+              <mat-label>Search books</mat-label>
+              <input matInput formControlName="term" >
+              <mat-icon matSuffix (click)="shearch()">search</mat-icon>
+            </mat-form-field>
+          </form>
+
         <img src="/assets/users/{{userName}}.jpg" onerror="src='/assets/users/profile.jpg'" class="profile-img">
-        <h1>{{userName}}</h1>
+        <h2>{{userName}}</h2>
+
+        <button mat-button [matMenuTriggerFor]="appMenu" class="meni-button">
+            <mat-icon >more_vert</mat-icon>
+        </button>
     </div>
 
-    <button mat-button [matMenuTriggerFor]="appMenu">
-        <mat-icon >more_vert</mat-icon>
-    </button>
+
     <mat-menu #appMenu>
         <button mat-menu-item (click)="changeView()" *ngIf="isAdmin">Change view</button>
         <button mat-menu-item (click)="showUsers()" *ngIf="isAdmin">Users</button>

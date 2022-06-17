@@ -1,5 +1,5 @@
 <div class="flex-container" *ngIf="vm$ | async as vm">
-    <div class="flex-item" *ngFor="let book of vm.books" >
+    <div class="flex-item" *ngFor="let book of vm.filteredBooks" >
         <mat-card class="example-card" *ngIf="book">
             <mat-card-header class="card_content" (click)="showBookDialog(book)">
                 <mat-card-title>{{book?.title}}</mat-card-title>
@@ -27,5 +27,10 @@
             </mat-card-actions> 
         </mat-card> 
     </div>
+    <div style="margin: 50px;" *ngIf="vm.filteredBooks.length == 0">
+        <h1>No books found</h1>
+    </div>
 </div>
+
+
       

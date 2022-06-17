@@ -27,7 +27,51 @@ $iconWidth:56px;
 
     display: flex;
     justify-content: space-between;
+
+    @media (max-width:720px){
+        height: 170px;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
 }
+
+.example-form {
+    padding-top: 10px;
+    min-width: 50px;
+    padding-right: 50px;
+    @media (max-width:720px){
+        padding-right: 10px;
+    }
+}
+
+.toolbar-features{
+    display:flex; 
+    justify-content:center; 
+    align-items:center;
+
+    @media (max-width:720px){
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        h2{
+            visibility: collapse;
+        }
+    }
+}
+
+.meni-button{
+    @media (max-width:720px){
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: 14px;
+        margin: 20px;
+    }
+}
+  
+
 
 
 
