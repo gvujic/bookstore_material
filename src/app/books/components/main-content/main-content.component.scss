@@ -6,15 +6,21 @@
   width: 300px;
   height: 300px;
   justify-content: center;
+
+  @media(max-width: 520px){
+      height: 220px;
+      img{
+        height: 50px;
+        width: 50px;
+      }
+  }
 }
 
 .flex-container{
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
-
   gap:10px 10px; //rows gap columns gap
-
   background-color: gray;
 }
 
