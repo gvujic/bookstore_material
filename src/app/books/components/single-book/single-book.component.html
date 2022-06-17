@@ -1,8 +1,8 @@
 <mat-card *ngIf="book" >
-    <mat-card-title-group class="card">
+    <mat-card-title-group class="card-title">
         <mat-card-title>{{book?.title}}</mat-card-title>
         <mat-card-subtitle>{{book?.author}}</mat-card-subtitle>
-        <img mat-card-xl-image [src]='getBookImage(book)'>
+        <img [src]='getBookImage(book)'>
     </mat-card-title-group>
 
     <mat-card-content>

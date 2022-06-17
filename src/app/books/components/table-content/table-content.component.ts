@@ -1,3 +1,4 @@
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +9,8 @@ import { DataOperation, DialogComponentFactory } from '../../dialog-component-fa
 import { Book } from '../../models/book';
 import { BookGenre } from '../../models/bookGenre';
 import { DialogModel } from '../../models/dialogModel';
+
+const SMALL_WIDTH_BREAKPOINT = 720
 
 @Component({
   selector: 'app-table-content',
@@ -22,11 +25,14 @@ export class TableContentComponent implements OnDestroy, AfterViewInit{
   subcription:Subscription = new Subscription()
 
   isDarkTheme:boolean = false
+  isScreenSmall:boolean = true
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public facade:BooksFacade, private dialogFactory:DialogComponentFactory) {}
+  constructor(public facade:BooksFacade, 
+              private dialogFactory:DialogComponentFactory, 
+              private breakpointObserver: BreakpointObserver) {}
 
   ngAfterViewInit(): void {
     this.subcription.add(this.facade.books$.subscribe((books) => {
@@ -45,6 +51,19 @@ export class TableContentComponent implements OnDestroy, AfterViewInit{
     this.subcription.add(this.facade.genres$.subscribe((genres) => {
       this.genres = genres
     }))
+
+    this.subcription.add(this.breakpointObserver
+      .observe([`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`])
+      .subscribe((state:BreakpointState) => {
+        this.isScreenSmall = state.matches
+
+        if(this.isScreenSmall){
+          this.displayedColumns = ['author','title','price','buttons']
+        }else{
+          this.displayedColumns = ['image','author','title', 'bookGenreId', 'pagesNumber','price','description',
+          'comments','thumbsUps' ,'buttons']
+        }
+      }))
   }
 
   openRemoveBookDialog(deleteBook:Book){

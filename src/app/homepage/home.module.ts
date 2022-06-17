@@ -6,14 +6,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthguardService } from './login/authguard.service';
+import { AdminAuthguardService } from './login/admin-authguard.service';
 
 const routes: Routes = [
-  { path:'', component:HomepageComponent,
+  { 
+    path:'', component:HomepageComponent,
     children:[
       { path:'welcome', component:WelcomePageComponent },
       { path:'login', component:LoginComponent },
       { path:'**', component:WelcomePageComponent }
-    ]}
+    ]
+  }
 ];
 
 @NgModule({

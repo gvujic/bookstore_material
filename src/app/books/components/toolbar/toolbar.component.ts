@@ -12,9 +12,11 @@ export class ToolbarComponent {
   @Output() toggleTheme = new EventEmitter()
   isTableView:boolean = false
   isAdmin:boolean = true
+  userName:string
   
   constructor(private router:Router, private facade:UserFacade) { 
     this.isAdmin = localStorage.getItem('role') === 'admin' ? true : false
+    this.userName = localStorage.getItem('user')!
   }
 
   changeView(){
@@ -25,10 +27,6 @@ export class ToolbarComponent {
       this.isTableView = true
       this.router.navigate(['books/table'])
     }
-  }
-
-  homePage(){
-    this.router.navigate(['/home/welcome'])
   }
 
   logOut(){

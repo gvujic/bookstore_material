@@ -54,6 +54,7 @@ export class MainContentComponent implements OnInit {
   }
 
   getAllThubmsUps(thumbs:BooksThumbsUp[]){
+    console.log(thumbs)
     return thumbs.map((x) =>  x.userName).join(', ')
   }
 

@@ -12,6 +12,8 @@
   
   .app-sidenav {
     width: 240px;
+    padding: 20px;
+
   }
   .wrapper{
     margin: 20px;
@@ -23,8 +25,9 @@
       margin: 2px;
   }
 
-  .genres-btn{
+  .side-meni-btn{
     font-size: large;
+    min-width: 150px;
   }
 
   .authors{
@@ -34,5 +37,21 @@
 
   .mat-menu-item:hover{
     background-color:lightgray;
+  }
+
+  h2:hover {
+    background-color:lightgray;
+  }
+
+  h2{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+
+    mat-icon{
+      margin-right: 10px;
+    }
   }
 

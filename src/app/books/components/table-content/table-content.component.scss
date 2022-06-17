@@ -7,16 +7,13 @@
   background-color:lightgray;
 }
 
-.inner{
-  text-align: center;
-  padding: 20px;
-}
-
 .table-image{
-  max-width: 50px;
-  max-height: 40px;
-  margin-right: 10px;
-  margin: auto;
+  display: flex;
+  align-self: center;
+  align-content: center;
+  width: 50px;
+  height: 40px;
+  margin: 10px;
 }
 
 .desc_cell{
@@ -35,4 +32,12 @@
   margin-right: 80px;
   font-size: 4rem;
   cursor: pointer;
+}
+
+td{
+  word-wrap: break-word;
+  @media (max-width:500px){
+    border: solid 1px lightgray;
+    border-radius: 5%;
+  }
 }

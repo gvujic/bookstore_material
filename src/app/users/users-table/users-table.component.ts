@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,17 +12,22 @@ import { UserFacade } from '../users-facade';
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.scss']
 })
-export class UsersTableComponent implements OnInit, OnDestroy {
-  displayedColumns:string[] = ['userName','role', 'buttons']
-  dataSource:MatTableDataSource<User>
+export class UsersTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  displayedColumns:string[] = ['userName','role', 'buttons']
+  dataSource:MatTableDataSource<User>
   subcription:Subscription = new Subscription()
   isDarkTheme:boolean = false
+  errorMessage:string
 
   constructor(private factory:UserDialogFactory, private facade:UserFacade){}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    this.subcription.add(this.facade.errorMessage$.subscribe(error =>
+      this.errorMessage = error
+    ))
+
     this.subcription.add(this.facade.users$.subscribe(users => {
       this.updateDataSource(users)
     }))

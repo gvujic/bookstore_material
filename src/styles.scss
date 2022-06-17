@@ -26,3 +26,11 @@ html, body {
     height: 100%;
     background-color: gray;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.profile-img{
+    border: solid 3px black;
+    border-radius: 50%;
+    width: 60px;
+    height: 50px;
+    margin-right: 10px;
+  }

@@ -8,7 +8,10 @@ import { UserFacade } from '../users-facade';
   styleUrls: ['./users-toolbar.component.scss']
 })
 export class UsersToolbarComponent {
-  constructor(private router:Router, private facade:UserFacade) {} 
+  userName:string
+  constructor(private router:Router, private facade:UserFacade) {
+    this.userName = localStorage.getItem('user')!
+  } 
 
   navigateHome(){
     this.router.navigate(['home/'])

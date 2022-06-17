@@ -1,11 +1,12 @@
 <app-toolbar (sidenavToggle)="sidenav.toggle()" (toggleTheme)="toggleTheme()" [class.dark-theme]="isDarkTheme"></app-toolbar>
 <mat-sidenav-container class="app-sidenav-container" [class.dark-theme]="isDarkTheme">
-  <mat-sidenav #sidenav class="app-sidenav" 
-                        [opened]="!isScreenSmall"
-                        [mode]="isScreenSmall ? 'over' : 'side'" >
-    <mat-toolbar color="primary">
-      <button mat-button [matMenuTriggerFor]="main_menu" class="genres-btn">Genres</button>
-    </mat-toolbar>
+  <mat-sidenav #sidenav class="app-sidenav" [mode]="isScreenSmall ? 'over' : 'side'">
+
+    <h2 [matMenuTriggerFor]="main_menu">Genres</h2>
+    <h2 [matMenuTriggerFor]="main_menu2">Authors</h2>
+    <hr>
+    <h2 (click)="homePage()"><mat-icon>home</mat-icon>  Home</h2>
+    <h2><mat-icon>info</mat-icon>  About</h2>
 
       <mat-menu #main_menu="matMenu">
         <div *ngIf="vm$ | async as vm">
@@ -18,20 +19,18 @@
         </div>
       </mat-menu>
 
-    <div *ngIf="vm$ | async as vm">
-      <h3 class="authors">Authors</h3>
-      <ng-container *ngFor="let author of vm.authors">
-        <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ author.name }} ({{author.authorBooks.length}})
-          <mat-icon>expand_more</mat-icon>
-        </button>
-        <mat-menu #sub_menu="matMenu">
-          <button *ngFor="let book of author.authorBooks" mat-menu-item (click)="showBookDetails(book)">{{ book.title }}</button>
-        </mat-menu>
-      </ng-container>
-    </div>
-
+      <mat-menu #main_menu2="matMenu">
+        <div *ngIf="vm$ | async as vm">
+          <ng-container *ngFor="let author of vm.authors">
+            <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ author.name }} ({{author.authorBooks.length}})</button>
+            <mat-menu #sub_menu="matMenu">
+              <button *ngFor="let book of author.authorBooks" mat-menu-item (click)="showBookDetails(book)">{{ book.title }}</button>
+            </mat-menu>
+          </ng-container>
+        </div>
+      </mat-menu>
   </mat-sidenav>
-  
+
   <div class="app-sidenav-content">
       <div class="wrapper">
           <router-outlet></router-outlet>

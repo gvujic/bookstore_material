@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { BehaviorSubject, concatMap, distinctUntilChanged, map } from "rxjs";
+import { BehaviorSubject, concatMap, distinctUntilChanged, map, Subscription } from "rxjs";
 import { User } from "../books/models/User";
 import { UserService } from "./users-service.service";
 
@@ -15,7 +16,7 @@ let _state:UsersState = {
 }
 
 @Injectable()
-export class UserFacade{
+export class UserFacade implements OnDestroy{
     private store = new BehaviorSubject<UsersState>(_state)
     private state$ = this.store.asObservable()
 
@@ -25,18 +26,41 @@ export class UserFacade{
     users$ = this.state$.pipe(map( state => state.users), distinctUntilChanged())
     authorised$ = this.state$.pipe(map(state => state.authorised), distinctUntilChanged())
 
-    constructor(private userService: UserService, private router:Router){
-        this.userService.getAllUsers().subscribe(users => {
-            this.updateState({..._state, users})
-        })
+    subscripitons:Subscription = new Subscription()
+
+    constructor(private userService: UserService, 
+                private router:Router,
+                private _snackBar:MatSnackBar){
+        this.subscripitons.add(this.userService.getAllUsers().subscribe(
+            {
+                next: users => {
+                    this.updateState({..._state, users})
+                    this.errorOccurredSubject.next("")
+                },
+                error: (e) => { this.errorOccurredSubject.next("Failed to fetch all users: "  + e.message) },
+            }
+        ))
     }
 
     addUser(user:User){
-        this.userService.registerUser(user).pipe(
+        this.subscripitons.add(this.userService.registerUser(user).pipe(
             concatMap(() => this.userService.getAllUsers().pipe(
                 map(users => this.updateState({..._state, users}))
             ))
-        ).subscribe()
+        ).subscribe(
+            {
+                next: () => {
+                    this._snackBar.open("Saved user: " + user.userName, 'Confirm', {
+                        horizontalPosition:'end',
+                        verticalPosition:'top',
+                        duration:3000,
+                    }) 
+
+                    this.errorOccurredSubject.next("")
+                },
+                error: (e) => { this.errorOccurredSubject.next("Failed to add user: " + e.message) },
+            }
+        ))
     }
 
     deleteUser(user:User){
@@ -44,7 +68,18 @@ export class UserFacade{
             concatMap(() => this.userService.getAllUsers().pipe(
                 map(users => this.updateState({..._state, users}))
             ))
-        ).subscribe()
+        ).subscribe({
+            next: () => {
+                this._snackBar.open("Deleted user: " + user.userName, 'Confirm', {
+                    horizontalPosition:'end',
+                    verticalPosition:'top',
+                    duration:3000,
+                })
+
+                this.errorOccurredSubject.next("")
+            },
+            error: (e) => { this.errorOccurredSubject.next("Failed to delete user: " + e.message) }
+        })
     }
 
     updateUser(user:User){
@@ -52,26 +87,40 @@ export class UserFacade{
             concatMap(() => this.userService.getAllUsers().pipe(
                 map(users => this.updateState({..._state, users}))
             ))
-        ).subscribe()            
+        ).subscribe({
+            next:() => {
+                this._snackBar.open("Updated user: " + user.userName, 'Confirm', {
+                    horizontalPosition:'end',
+                    verticalPosition:'top',
+                    duration:3000,
+                })
+                this.errorOccurredSubject.next("")
+            },
+            error: (e) => { this.errorOccurredSubject.next("Failed to update user: " + e.message) }
+        })            
     }
 
-    provideAutorisation(user:User){
-        this.userService.getAuthorisation(user).subscribe(result => {
-            if(!result) return
-            localStorage.setItem('jwt', result.token)
-            localStorage.setItem('user', result.user)
-            localStorage.setItem('role', result.role)
-            localStorage.setItem('userId', result.id)
-
-            let authorised = true
-            this.updateState({..._state, authorised })
-            this.router.navigate(['home/welcome'])
-
-            this.errorOccurredSubject.next('')
-        }, 
-        err => {
-          this.errorOccurredSubject.next(err.message)
-        })
+    provideAutorisation(user:User){{}
+        this.subscripitons.add(this.userService.getAuthorisation(user).subscribe(
+            {
+                next: result => {
+                    if(!result) return
+                    localStorage.setItem('jwt', result.token)
+                    localStorage.setItem('user', result.user)
+                    localStorage.setItem('role', result.role)
+                    localStorage.setItem('userId', result.id)
+        
+                    let authorised = true
+                    this.updateState({..._state, authorised })
+                    this.router.navigate(['home/welcome'])
+        
+                    this.errorOccurredSubject.next('')
+                },
+                error: err => {
+                    this.errorOccurredSubject.next("Failed to provide authorisation: " + err.message)
+                }
+            }
+        ))
     }
 
     logout(){
@@ -83,5 +132,10 @@ export class UserFacade{
 
     private updateState(state:UsersState){
         this.store.next((_state = state))
+    }
+
+    ngOnDestroy(): void {
+        console.log("UserFacade - ngOnDestroy")
+        this.subscripitons.unsubscribe()
     }
 }

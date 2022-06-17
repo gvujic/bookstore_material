@@ -57,6 +57,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.isDarkTheme = !this.isDarkTheme
   }
 
+  homePage(){
+    this.router.navigate(['/home/welcome'])
+  }
+
   ngOnDestroy(): void { 
     this.subscription.unsubscribe()
   }

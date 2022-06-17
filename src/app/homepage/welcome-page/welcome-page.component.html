@@ -1,13 +1,16 @@
-<div class="container">
+<div class="container" >
     <mat-toolbar class="item header mat-elevation-z15" color="primary">
         <img src="/assets/book.jpeg" class="img" (click)="sidenav.toggle()">
-        <h1> {{welcomeMsg}}</h1>
+        <div *ngIf="userLogged" style="display:flex;justify-content: center;align-items:center;">
+            <img src="/assets/users/{{userName}}.jpg" onerror="src='/assets/users/profile.jpg'" class="profile-img">
+            <h1>{{userName}}</h1>
+        </div>
         <button mat-button 
         (click)="log()"> 
             <mat-icon>person</mat-icon> 
             {{logState}}
         </button>
-    </mat-toolbar>
+    </mat-toolbar> 
     <div class="item main">
         <button mat-raised-button color="primary" (click)="loadBooks()" class="loadBtn">
             Checkout books
@@ -22,9 +25,9 @@
             <mat-icon>facebook</mat-icon>
         </mat-toolbar>
     </div>
-    <div class="side">
-        <mat-sidenav-container class="app-sidenav-container mat-elevation-z10">
-            <mat-sidenav #sidenav class="app-sidenav"> 
+    <div class="side" (mouseenter)="mouseEnterSidenav()" (mouseleave)="mouseLeaveSidenav()">
+        <mat-sidenav-container class="app-sidenav-container">
+            <mat-sidenav #sidenav class="app-sidenav" [mode]="isScreenSmall ? 'over' : 'side'"> 
                 <h2><mat-icon>home</mat-icon> Home</h2>
                 <h2><mat-icon>person</mat-icon> Profile</h2>
                 <h2><mat-icon>info</mat-icon> About</h2>
@@ -32,6 +35,10 @@
                 <h2><mat-icon>help</mat-icon> Help</h2>
             </mat-sidenav>
         </mat-sidenav-container>
+    </div>
+
+    <div class="side2">
+        <app-login (closeWindow)="hideLoginForm()"  [hidden]="!showLoginForm"> </app-login>
     </div>
 </div>
 
